@@ -1,0 +1,28 @@
+[project]
+name = "kitchenbot"
+version = "0.1.0"
+description = "Weekend experiment: train a tiny cooking SLM from scratch, then LoRA chat-tune it."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "bychwa" }]
+dependencies = [
+  "accelerate",
+  "datasets",
+  "huggingface_hub",
+  "peft",
+  "tokenizers",
+  "torch",
+  "transformers",
+  "trl>=0.14",
+  "wandb",
+]
+
+[project.urls]
+Homepage = "https://github.com/bychwa/kitchenbot"
+Repository = "https://github.com/bychwa/kitchenbot"
+"Base model" = "https://huggingface.co/bychwa/kitchenbot-base"
+"Chat model" = "https://huggingface.co/bychwa/kitchenbot-chat"
+
+[tool.uv]
+package = false

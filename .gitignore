@@ -1,0 +1,39 @@
+# Python / uv
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local training artifacts (weights live on Hugging Face)
+models/
+wandb/
+*.ckpt
+*.bin
+*.pt
+*.safetensors
+
+# Full datasets (regenerate with scripts; samples/ is kept)
+data/corpus.txt
+data/cooking_qa.jsonl
+
+# Local-only learning notes (not part of the public repro)
+lessons/
+*.ipynb
+00-start-here.md
+01-tokenizer.md
+02-pretrain-base-model.md
+03-fine-tune-chat.md
+04-inference-chat.md
+simplified.md
+advanced.md
+
+# Secrets / OS
+.env
+.env.*
+.DS_Store
+.hf/
+.cache/
