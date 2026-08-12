@@ -16,7 +16,7 @@ wandb/
 *.pt
 *.safetensors
 
-# Full datasets (regenerate with scripts; samples/ is kept)
+# Full datasets (regenerate with `kitchenbot download` / `kitchenbot qa`; samples/ is kept)
 data/corpus.txt
 data/cooking_qa.jsonl
 

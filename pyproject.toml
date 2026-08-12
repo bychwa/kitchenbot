@@ -1,11 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "kitchenbot"
-version = "0.1.0"
-description = "Weekend experiment: train a tiny cooking SLM from scratch, then LoRA chat-tune it."
+version = "0.2.0"
+description = "A tiny from-scratch cooking SLM: tokenizer → pretrain → LoRA chat, as an installable pipeline."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
 authors = [{ name = "bychwa" }]
+keywords = ["llm", "small-language-model", "gpt2", "lora", "peft", "pretraining", "education"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
   "accelerate",
   "datasets",
@@ -15,14 +25,30 @@ dependencies = [
   "torch",
   "transformers",
   "trl>=0.14",
-  "wandb",
+  "jinja2",
 ]
+
+[project.optional-dependencies]
+# Weights & Biases logging is opt-in; nothing imports it unless --wandb is passed.
+logging = ["wandb"]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+kitchenbot = "kitchenbot.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/bychwa/kitchenbot"
 Repository = "https://github.com/bychwa/kitchenbot"
 "Base model" = "https://huggingface.co/bychwa/kitchenbot-base"
 "Chat model" = "https://huggingface.co/bychwa/kitchenbot-chat"
+"Training logs" = "https://wandb.ai/bychwa-bouer-tech/kitchenbot"
+
+[tool.hatch.build.targets.wheel]
+packages = ["kitchenbot"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
 
 [tool.uv]
-package = false
+package = true
