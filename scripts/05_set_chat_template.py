@@ -1,37 +1,15 @@
-"""Attach a tiny Jinja chat template to the base tokenizer."""
+"""Deprecated alias for ``python -m kitchenbot template``.
 
+Attach the chat template. The real code lives in ``kitchenbot/tokenization.py``.
+Kept so older guides and muscle memory keep working.
+"""
+
+import sys
 from pathlib import Path
 
-from transformers import AutoTokenizer
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-BASE = Path("models/kitchenbot-base")
-
-CHAT_TEMPLATE = (
-    "{% for message in messages %}"
-    "{% if message['role'] == 'user' %}<|user|>\n{{ message['content'] }}\n"
-    "{% elif message['role'] == 'assistant' %}<|assistant|>\n{{ message['content'] }}{{ eos_token }}\n"
-    "{% endif %}{% endfor %}"
-    "{% if add_generation_prompt %}<|assistant|>\n{% endif %}"
-)
-
-
-def main() -> None:
-    if not BASE.is_dir():
-        raise SystemExit(f"Missing {BASE}. Pretrain (script 03) first.")
-
-    tok = AutoTokenizer.from_pretrained(BASE)
-    tok.chat_template = CHAT_TEMPLATE
-    tok.save_pretrained(BASE)
-
-    demo = tok.apply_chat_template(
-        [{"role": "user", "content": "How do I cook rice?"}],
-        tokenize=False,
-        add_generation_prompt=True,
-    )
-    print(f"chat_template saved into {BASE}")
-    print("--- sample prompt ---")
-    print(demo)
-
+from kitchenbot.cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main(["template", *sys.argv[1:]]))

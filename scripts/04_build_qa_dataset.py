@@ -1,65 +1,15 @@
-"""Turn recipes into simple cooking Q&A pairs for chat SFT."""
+"""Deprecated alias for ``python -m kitchenbot qa``.
 
-import json
-import random
+Build the synthetic Q&A dataset. The real code lives in ``kitchenbot/data.py``.
+Kept so older guides and muscle memory keep working.
+"""
+
+import sys
 from pathlib import Path
 
-from datasets import load_dataset
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-OUT_PATH = Path("data/cooking_qa.jsonl")
-MAX_EXAMPLES = 10_000
-SEED = 42
-
-TEMPLATES = [
-    ("What are the ingredients for {title}?", "{ingredients}"),
-    ("How do I make {title}?", "{steps}"),
-    ("Give me a short tip for making {title}.", "Key steps: {steps_short}"),
-    ("What is the first step for {title}?", "{first_step}"),
-]
-
-
-def main() -> None:
-    random.seed(SEED)
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    ds = load_dataset("idoyaaran/mise-recipes", split="train", streaming=True)
-    count = 0
-
-    with OUT_PATH.open("w", encoding="utf-8") as f:
-        for row in ds:
-            title = (row.get("title") or "this dish").strip()[:80]
-            ings = ", ".join(
-                (i.get("name") or "") for i in (row.get("ingredients") or [])
-            )
-            steps_list = row.get("steps") or []
-            steps = " ".join(steps_list).strip()
-            if len(steps) < 20 or not ings:
-                continue
-
-            first = steps_list[0] if steps_list else steps[:80]
-            steps_short = steps[:200]
-            t_q, t_a = random.choice(TEMPLATES)
-            q = t_q.format(title=title)
-            a = t_a.format(
-                title=title,
-                ingredients=ings,
-                steps=steps,
-                steps_short=steps_short,
-                first_step=first,
-            )
-            record = {
-                "messages": [
-                    {"role": "user", "content": q},
-                    {"role": "assistant", "content": a},
-                ]
-            }
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
-            count += 1
-            if count >= MAX_EXAMPLES:
-                break
-
-    print(f"Wrote {count} examples → {OUT_PATH}")
-
+from kitchenbot.cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main(["qa", *sys.argv[1:]]))
