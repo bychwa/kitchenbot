@@ -141,7 +141,7 @@ Full scripts (uv setup, corpus → tokenizer → pretrain → SFT → CLI):
 ```bash
 export HF_USER=bychwa
 export WANDB_PROJECT=kitchenbot
-python scripts/03_pretrain_base.py
+uv run kitchenbot pretrain --push --wandb
 ```
 
 ## License

@@ -131,7 +131,7 @@ Or use the CLI from the training repo:
 
 ```bash
 export HF_USER=bychwa
-python scripts/07_chat.py
+uv run kitchenbot chat
 ```
 
 ## Intended use & limitations
@@ -148,10 +148,10 @@ python scripts/07_chat.py
 ## Reproduce
 
 ```bash
-# after base is trained / downloaded into models/kitchenbot-base
-python scripts/04_build_qa_dataset.py
-python scripts/05_set_chat_template.py
-python scripts/06_finetune_chat.py
+# after the base model is in models/kitchenbot-base
+uv run kitchenbot qa
+uv run kitchenbot template
+uv run kitchenbot sft --push
 ```
 
 Full walkthrough: **https://github.com/bychwa/kitchenbot**
